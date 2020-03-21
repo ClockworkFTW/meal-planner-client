@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import IngredientList from "./components/IngredientList";
+import IngredientPage from "./components/IngredientPage";
+import IngredientForm from "./components/IngredientForm";
+
+const App = () => (
+  <Router>
+    <Switch>
+      <Route path="/ingredients" exact>
+        <IngredientList />
+      </Route>
+      <Route path="/ingredients/form" exact>
+        <IngredientForm />
+      </Route>
+      <Route path="/ingredients/form/:id">
+        <IngredientForm />
+      </Route>
+      <Route path="/ingredients/:id">
+        <IngredientPage />
+      </Route>
+    </Switch>
+  </Router>
+);
 
 export default App;
