@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { getIngredient } from "../services/ingredient";
+import { getIngredient } from "../reducers/ingredient";
 
-const IngredientPage = () => {
+const IngredientPage = ({ ingredient, getIngredient }) => {
   const { id } = useParams();
 
-  const [ingredient, setIngredient] = useState(null);
-
   useEffect(() => {
-    getIngredient(id, setIngredient);
-  }, [id]);
+    getIngredient(id);
+  }, []);
 
   return ingredient ? (
     <div>
@@ -23,4 +22,10 @@ const IngredientPage = () => {
   ) : null;
 };
 
-export default IngredientPage;
+const mapStateToProps = state => ({
+  pending: state.ingredients.pending,
+  ingredient: state.ingredients.one,
+  error: state.ingredients.error
+});
+
+export default connect(mapStateToProps, { getIngredient })(IngredientPage);

@@ -1,41 +1,59 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import {
   getIngredient,
   createIngredient,
   updateIngredient
-} from "../services/ingredient";
+} from "../reducers/ingredient";
 
-const IngredientForm = () => {
+const INITIAL_STATE = {
+  name: "",
+  calories: "",
+  carbs: "",
+  protein: "",
+  fat: "",
+  serving: "",
+  unit: ""
+};
+
+const IngredientForm = props => {
+  // Destructure all props
+  const { pending, ingredient, error } = props;
+  const { getIngredient, createIngredient, updateIngredient } = props;
+
+  // Get the ID from the URL parameters
   const { id } = useParams();
 
-  const [ingredient, setIngredient] = useState({
-    name: "",
-    calories: "",
-    carbs: "",
-    protein: "",
-    fat: "",
-    serving: "",
-    unit: ""
-  });
+  const [ingredientForm, setIngredientForm] = useState(INITIAL_STATE);
 
+  // If ID exists, fetch the ingredient
   useEffect(() => {
-    if (id) {
-      getIngredient(id, setIngredient);
-    }
+    if (id) getIngredient(id);
   }, [id]);
 
+  useEffect(() => {
+    // If no ID, reset the ingredient form state
+    if (!id) setIngredientForm(INITIAL_STATE);
+    // Update the ingredient form state with the fetched ingredient
+    if (ingredient) setIngredientForm(ingredient);
+  }, [ingredient]);
+
+  // Controlled inputs for ingredient form
   const handleChange = (event, prop) => {
-    setIngredient({ ...ingredient, [prop]: event.target.value });
+    setIngredientForm({ ...ingredientForm, [prop]: event.target.value });
   };
 
   const handleSubmit = event => {
     event.preventDefault();
+    // If ID, update the ingredient
     if (id) {
-      updateIngredient(id, ingredient);
-    } else {
-      createIngredient(ingredient);
+      updateIngredient(id, ingredientForm);
+    }
+    // Else, create a new ingredient
+    else {
+      createIngredient(ingredientForm);
     }
   };
 
@@ -44,43 +62,43 @@ const IngredientForm = () => {
       <input
         type="text"
         placeholder="name"
-        value={ingredient.name}
+        value={ingredientForm.name}
         onChange={event => handleChange(event, "name")}
       />
       <input
         type="number"
         placeholder="calories"
-        value={ingredient.calories}
+        value={ingredientForm.calories}
         onChange={event => handleChange(event, "calories")}
       />
       <input
         type="number"
         placeholder="carbs"
-        value={ingredient.carbs}
+        value={ingredientForm.carbs}
         onChange={event => handleChange(event, "carbs")}
       />
       <input
         type="number"
         placeholder="protein"
-        value={ingredient.protein}
+        value={ingredientForm.protein}
         onChange={event => handleChange(event, "protein")}
       />
       <input
         type="number"
         placeholder="fat"
-        value={ingredient.fat}
+        value={ingredientForm.fat}
         onChange={event => handleChange(event, "fat")}
       />
       <input
         type="number"
         placeholder="serving"
-        value={ingredient.serving}
+        value={ingredientForm.serving}
         onChange={event => handleChange(event, "serving")}
       />
       <input
         type="text"
         placeholder="unit"
-        value={ingredient.unit}
+        value={ingredientForm.unit}
         onChange={event => handleChange(event, "unit")}
       />
       <button type="submit">{id ? "update" : "create"}</button>
@@ -88,4 +106,14 @@ const IngredientForm = () => {
   );
 };
 
-export default IngredientForm;
+const mapStateToProps = state => ({
+  pending: state.ingredients.pending,
+  ingredient: state.ingredients.one,
+  error: state.ingredients.error
+});
+
+export default connect(mapStateToProps, {
+  getIngredient,
+  createIngredient,
+  updateIngredient
+})(IngredientForm);

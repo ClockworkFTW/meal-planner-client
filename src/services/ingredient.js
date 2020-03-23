@@ -2,14 +2,14 @@ import axios from "axios";
 
 const baseURL = "http://localhost:5000/ingredients";
 
-const getIngredients = async setIngredients => {
+const getIngredients = async () => {
   const result = await axios.get(baseURL);
-  setIngredients(result.data);
+  return result.data;
 };
 
-const getIngredient = async (id, setIngredient) => {
+const getIngredient = async id => {
   const result = await axios.get(`${baseURL}/${id}`);
-  setIngredient(result.data);
+  return result.data;
 };
 
 const createIngredient = async ingredient => {

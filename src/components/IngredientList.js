@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { getIngredients } from "../services/ingredient";
+import { getIngredients } from "../reducers/ingredient";
 
 import IngredientCard from "./IngredientCard";
 
-const IngredientList = () => {
-  const [ingredients, setIngredients] = useState([]);
-
+const IngredientList = ({ ingredients, getIngredients }) => {
   useEffect(() => {
-    getIngredients(setIngredients);
+    getIngredients();
   }, []);
 
   return (
@@ -22,4 +21,10 @@ const IngredientList = () => {
   );
 };
 
-export default IngredientList;
+const mapStateToProps = state => ({
+  pending: state.ingredients.pending,
+  ingredients: state.ingredients.all,
+  error: state.ingredients.error
+});
+
+export default connect(mapStateToProps, { getIngredients })(IngredientList);
