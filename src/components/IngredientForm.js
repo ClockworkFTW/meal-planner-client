@@ -34,13 +34,11 @@ const IngredientForm = props => {
   }, [id]);
 
   useEffect(() => {
-    // If no ID, reset the ingredient form state
-    if (!id) setIngredientForm(INITIAL_STATE);
-    // Update the ingredient form state with the fetched ingredient
-    if (ingredient) setIngredientForm(ingredient);
+    // When ingredient has been fetched, update the form state
+    if (id && ingredient) setIngredientForm(ingredient);
   }, [ingredient]);
 
-  // Controlled inputs for ingredient form
+  // Controlled inputs for form
   const handleChange = (event, prop) => {
     setIngredientForm({ ...ingredientForm, [prop]: event.target.value });
   };

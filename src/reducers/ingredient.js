@@ -34,8 +34,8 @@ export const getIngredient = id => {
   return async dispatch => {
     dispatch(apiIngredientsPending);
     try {
-      const ingredients = await ingredientServices.getIngredient(id);
-      dispatch(apiIngredientsSuccess("get one", ingredients));
+      const ingredient = await ingredientServices.getIngredient(id);
+      dispatch(apiIngredientsSuccess("get one", ingredient));
     } catch (error) {
       dispatch(apiIngredientsFailure(error));
     }
