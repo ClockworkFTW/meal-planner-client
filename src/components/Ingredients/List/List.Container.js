@@ -5,7 +5,9 @@ import { getAllIngredients } from "../../../reducers/ingredient";
 
 import { Card } from "./Card";
 
-export default () => {
+import * as List from "./List.Styles";
+
+export default ({ menuHeight }) => {
   let ingredients = useSelector(state => state.ingredients.all);
   const search = useSelector(state => state.ingredientModifiers.search);
   const dispatch = useDispatch();
@@ -18,7 +20,11 @@ export default () => {
     ingredient.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  return ingredients.map(ingredient => (
-    <Card key={ingredient.id} ingredient={ingredient} />
-  ));
+  return (
+    <List.Container menuHeight={menuHeight}>
+      {ingredients.map(ingredient => (
+        <Card key={ingredient.id} search={search} ingredient={ingredient} />
+      ))}
+    </List.Container>
+  );
 };

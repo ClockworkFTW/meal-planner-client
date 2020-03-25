@@ -5,7 +5,7 @@ export const Container = styled.div`
   align-items: center;
   padding: 6px 8px;
   border-radius: 50px;
-  background: #e2e8f0;
+  background: #edf2f7;
 `;
 
 export const Input = styled.input`
@@ -21,7 +21,7 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  width: 30px;
+  flex: 0 0 20px;
   padding: 0;
   outline: none;
   border: none;

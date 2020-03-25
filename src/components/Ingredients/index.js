@@ -1,3 +1,3 @@
-import Ingredients from "./Ingredients.View";
+import Ingredients from "./Ingredients.Container";
 
 export { Ingredients };
