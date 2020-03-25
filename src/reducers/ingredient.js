@@ -18,7 +18,7 @@ const apiIngredientsFailure = error => ({
   error
 });
 
-export const getIngredients = () => {
+export const getAllIngredients = () => {
   return async dispatch => {
     dispatch(apiIngredientsPending);
     try {
@@ -30,7 +30,7 @@ export const getIngredients = () => {
   };
 };
 
-export const getIngredient = id => {
+export const getOneIngredient = id => {
   return async dispatch => {
     dispatch(apiIngredientsPending);
     try {

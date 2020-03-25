@@ -1,16 +1,11 @@
 import { combineReducers } from "redux";
 
 import ingredients from "./ingredient";
-import ingredientFilter from "./ingredient-filter";
-import ingredientSort from "./ingredient-sort";
-
-import meals from "./meal";
+import ingredientModifiers from "./ingredient-modifiers";
 
 const rootReducer = combineReducers({
   ingredients,
-  ingredientFilter,
-  ingredientSort,
-  meals
+  ingredientModifiers
 });
 
 export default rootReducer;
