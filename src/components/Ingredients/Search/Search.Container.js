@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setIngredientModifier } from "../../../reducers/ingredient-modifiers";
@@ -11,13 +11,19 @@ export default () => {
 
   const [search, setSearch] = useState(term);
 
+  const inputRef = useRef(null);
+
   const submitSearch = () => {
-    if (search) dispatch(setIngredientModifier("search", search));
+    if (search) {
+      dispatch(setIngredientModifier("search", search));
+      inputRef.current.focus();
+    }
   };
 
   const clearSearch = () => {
-    setSearch("");
     dispatch(setIngredientModifier("search", ""));
+    setSearch("");
+    inputRef.current.focus();
   };
 
   return (
@@ -27,6 +33,7 @@ export default () => {
       setSearch={setSearch}
       submitSearch={submitSearch}
       clearSearch={clearSearch}
+      inputRef={inputRef}
     />
   );
 };
