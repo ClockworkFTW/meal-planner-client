@@ -6,7 +6,10 @@ export const setIngredientModifier = (prop, val) => ({
 });
 
 const INITIAL_STATE = {
-  search: ""
+  search: "",
+  filter: "all",
+  sort: "name",
+  ascending: true
 };
 
 const ingredientModifierReducer = (state = INITIAL_STATE, action) => {

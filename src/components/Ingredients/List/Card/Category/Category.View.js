@@ -7,7 +7,7 @@ export default ({ category }) => {
 
   return (
     <Category.Container background={color}>
-      <Category.Icon icon={["far", icon]} />
+      <Category.Icon icon={["fas", icon]} />
     </Category.Container>
   );
 };
@@ -17,6 +17,10 @@ export const setCategory = category => {
   let color = "#A0AEC0";
 
   switch (category) {
+    case "all":
+      icon = "shopping-basket";
+      color = "#A0AEC0";
+      break;
     case "vegetable":
       icon = "leaf";
       color = "#48BB78";
