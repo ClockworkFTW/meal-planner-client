@@ -22,8 +22,8 @@ export default ({ search, ingredient }) => {
           <span>{ingredient.calories}kcal</span>
           <span style={{ margin: "0 6px" }}>&bull;</span>
           <span>
-            {ingredient.serving}
-            {ingredient.unit}
+            {ingredient.serving_size}
+            {ingredient.serving_unit}
           </span>
         </Card.Meta>
       </Card.Group>

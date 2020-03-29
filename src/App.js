@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import store from "./store";
 
-import Home from "./routes/Home";
+import { Home } from "./routes";
 
 import { GlobalStyle } from "./App.Styles";
 
