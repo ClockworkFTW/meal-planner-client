@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Droppable } from "react-beautiful-dnd";
 
 import { getAllIngredients } from "../../../reducers/ingredient";
 
@@ -21,11 +22,25 @@ export default ({ menuHeight }) => {
   );
 
   return (
-    <List.Container menuHeight={menuHeight}>
-      {ingredients.map(ingredient => (
-        <Card key={ingredient.id} search={search} ingredient={ingredient} />
-      ))}
-    </List.Container>
+    <Droppable droppableId="ingredient-list">
+      {provided => (
+        <List.Container
+          menuHeight={menuHeight}
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          {ingredients.map((ingredient, index) => (
+            <Card
+              key={ingredient.id}
+              index={index}
+              ingredient={ingredient}
+              search={search}
+            />
+          ))}
+          {provided.placeholder}
+        </List.Container>
+      )}
+    </Droppable>
   );
 };
 
