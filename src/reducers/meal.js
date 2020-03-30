@@ -1,8 +1,14 @@
 import * as mealServices from "../services/meal";
 
+// MEAL API: Logic for handling all meal API calls
+
+// Types
+
 const API_MEALS_PENDING = "API_MEALS_PENDING";
 const API_MEALS_SUCCESS = "API_MEALS_SUCCESS";
 const API_MEALS_FAILURE = "API_MEALS_FAILURE";
+
+// Actions
 
 const apiMealsPending = () => ({
   type: API_MEALS_PENDING
@@ -66,6 +72,8 @@ export const deleteMeal = id => {
   };
 };
 
+// Handlers
+
 const handleApiSuccess = (state, action) => {
   const { method, data } = action.payload;
 
@@ -91,9 +99,15 @@ const handleApiSuccess = (state, action) => {
   return { ...state, pending: false, all };
 };
 
+// MEAL EDITOR: Logic for handling meal editor state
+
+// Types
+
 const ADD_MEAL_INGREDIENT = "ADD_MEAL_INGREDIENT";
 const MODIFY_MEAL_INGREDIENT = "MODIFY_MEAL_INGREDIENT";
 const REMOVE_MEAL_INGREDIENT = "REMOVE_MEAL_INGREDIENT";
+
+// Actions
 
 export const addMealIngredient = id => ({
   type: ADD_MEAL_INGREDIENT,
@@ -109,6 +123,46 @@ export const removeMealIngredient = (mealId, ingredientId) => ({
   type: REMOVE_MEAL_INGREDIENT,
   payload: { mealId, ingredientId }
 });
+
+// Handlers
+
+const handleModifyMealIngredient = (state, action) => {
+  const { mealId, ingredientId, quantity } = action.payload;
+  return state.all.map(meal => {
+    if (meal.id === mealId) {
+      const ingredients = meal.ingredients.map(ingredient => {
+        if (ingredient.id === ingredientId) {
+          if (quantity < 0) {
+            return { ...ingredient, quantity: 0 };
+          } else {
+            return { ...ingredient, quantity };
+          }
+        } else {
+          return ingredient;
+        }
+      });
+      return { ...meal, ingredients };
+    } else {
+      return meal;
+    }
+  });
+};
+
+const handleRemoveMealIngredient = (state, action) => {
+  const { mealId, ingredientId } = action.payload;
+  return state.all.map(meal => {
+    if (meal.id === mealId) {
+      const ingredients = meal.ingredients.filter(
+        ingredient => ingredient.id !== ingredientId
+      );
+      return { ...meal, ingredients };
+    } else {
+      return meal;
+    }
+  });
+};
+
+// MEAL REDUCER
 
 const INITIAL_STATE = {
   pending: false,
@@ -131,44 +185,6 @@ const mealsReducer = (state = INITIAL_STATE, action) => {
     default:
       return state;
   }
-};
-
-const handleModifyMealIngredient = (state, action) => {
-  const { mealId, ingredientId, quantity } = action.payload;
-
-  return state.all.map(meal => {
-    if (meal.id === mealId) {
-      return {
-        ...meal,
-        ingredients: meal.ingredients.map(ingredient => {
-          if (ingredient.id !== ingredientId) {
-            return { ...ingredient, quantity };
-          } else {
-            return ingredient;
-          }
-        })
-      };
-    } else {
-      return meal;
-    }
-  });
-};
-
-const handleRemoveMealIngredient = (state, action) => {
-  const { mealId, ingredientId } = action.payload;
-
-  return state.all.map(meal => {
-    if (meal.id === mealId) {
-      return {
-        ...meal,
-        ingredients: meal.ingredients.filter(
-          ingredient => ingredient.id !== ingredientId
-        )
-      };
-    } else {
-      return meal;
-    }
-  });
 };
 
 export default mealsReducer;

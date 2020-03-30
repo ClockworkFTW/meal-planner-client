@@ -4,8 +4,17 @@ import { Draggable } from "react-beautiful-dnd";
 import * as Card from "./Card.Styles";
 
 import { Category, setCategory } from "./Category";
+import { Meta } from "./Meta";
 
-export default ({ index, ingredient, search }) => {
+export default props => {
+  // General props
+  const { index, ingredient } = props;
+
+  // Meal list props
+  const { editable, modify, remove } = props;
+
+  // Ingredient list props
+  const { search } = props;
   const { color } = setCategory(ingredient.category);
 
   return (
@@ -17,6 +26,14 @@ export default ({ index, ingredient, search }) => {
           {...provided.dragHandleProps}
         >
           <Card.Group>
+            {editable && (
+              <Card.Quantity
+                type="number"
+                value={ingredient.quantity}
+                onChange={event => modify(ingredient.id, event.target.value)}
+                color={color}
+              />
+            )}
             <Category category={ingredient.category} />
             <Card.Name
               searchWords={[search]}
@@ -25,14 +42,12 @@ export default ({ index, ingredient, search }) => {
             />
           </Card.Group>
           <Card.Group>
-            <Card.Meta>
-              <span>{ingredient.calories}kcal</span>
-              <span style={{ margin: "0 6px" }}>&bull;</span>
-              <span>
-                {ingredient.serving_size}
-                {ingredient.serving_unit}
-              </span>
-            </Card.Meta>
+            <Meta ingredient={ingredient} />
+            {editable && (
+              <Card.Button onClick={() => remove(ingredient.id)}>
+                <Card.Icon icon={["fas", "times"]} />
+              </Card.Button>
+            )}
           </Card.Group>
         </Card.Container>
       )}

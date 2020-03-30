@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Highlighter from "react-highlight-words";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div`
   display: flex;
@@ -18,6 +19,17 @@ export const Group = styled.div`
   align-items: center;
 `;
 
+export const Quantity = styled.input`
+  width: 50px;
+  border: none;
+  outline: none;
+  background: none;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: ${props => props.color};
+`;
+
 export const Name = styled(Highlighter)`
   line-height: 20px;
   font-weight: 600;
@@ -29,9 +41,17 @@ export const Name = styled(Highlighter)`
   }
 `;
 
-export const Meta = styled.div`
-  margin-left: 20px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #718096;
+export const Button = styled.button`
+  margin-left: 8px;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 16px;
+  color: #a0aec0;
+  &:hover {
+    cursor: pointer;
+    color: #718096;
+  }
 `;
+
+export const Icon = styled(FontAwesomeIcon)``;

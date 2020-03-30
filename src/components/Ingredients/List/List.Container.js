@@ -4,7 +4,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 import { getAllIngredients } from "../../../reducers/ingredient";
 
-import { Card } from "./Card";
+import { Card } from "../../Meals/List/Item/Ingredients/Card";
 
 import * as List from "./List.Styles";
 

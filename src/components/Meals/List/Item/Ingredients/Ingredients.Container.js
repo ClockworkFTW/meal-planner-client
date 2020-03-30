@@ -8,9 +8,7 @@ import {
   removeMealIngredient
 } from "../../../../../reducers/meal";
 
-import { Card } from "../../../../Ingredients/List/Card";
-
-import * as Ingredients from "./Ingredients.Styles";
+import { Card } from "./Card";
 
 export default ({ meal }) => {
   const dispatch = useDispatch();
@@ -23,23 +21,23 @@ export default ({ meal }) => {
   return (
     <Droppable droppableId={`meal-${meal.id}`}>
       {provided => (
-        <Ingredients.Container
+        <div
           ref={provided.innerRef}
           {...provided.droppableProps}
+          style={{ width: "100%" }}
         >
           {meal.ingredients.map((ingredient, index) => (
-            <Ingredients.Item key={index}>
-              <input
-                type="number"
-                value={ingredient.quantity}
-                onChange={event => modify(ingredient.id, event.target.value)}
-              />
-              <Card ingredient={ingredient} index={index} />
-              <button onClick={() => remove(ingredient.id)}>remove</button>
-            </Ingredients.Item>
+            <Card
+              key={ingredient.id}
+              index={index}
+              ingredient={ingredient}
+              editable={true}
+              modify={modify}
+              remove={remove}
+            />
           ))}
           {provided.placeholder}
-        </Ingredients.Container>
+        </div>
       )}
     </Droppable>
   );
