@@ -104,14 +104,20 @@ const handleApiSuccess = (state, action) => {
 // Types
 
 const ADD_MEAL_INGREDIENT = "ADD_MEAL_INGREDIENT";
+const MOVE_MEAL_INGREDIENT = "MOVE_MEAL_INGREDIENT";
 const MODIFY_MEAL_INGREDIENT = "MODIFY_MEAL_INGREDIENT";
 const REMOVE_MEAL_INGREDIENT = "REMOVE_MEAL_INGREDIENT";
 
 // Actions
 
-export const addMealIngredient = id => ({
+export const addMealIngredient = (mealId, ingredientInd, ingredient) => ({
   type: ADD_MEAL_INGREDIENT,
-  id
+  payload: { mealId, ingredientInd, ingredient }
+});
+
+export const moveMealIngredient = result => ({
+  type: MOVE_MEAL_INGREDIENT,
+  result
 });
 
 export const modifyMealIngredient = (mealId, ingredientId, quantity) => ({
@@ -125,6 +131,78 @@ export const removeMealIngredient = (mealId, ingredientId) => ({
 });
 
 // Handlers
+
+const handleAddMealIngredient = (state, action) => {
+  const { mealId, ingredientInd, ingredient } = action.payload;
+  return state.all.map(meal => {
+    if (mealId === `meal-${meal.id}`) {
+      const { ingredients } = meal;
+      ingredients.splice(ingredientInd, 0, { ...ingredient, quantity: 1 });
+      return { ...meal, ingredients };
+    } else {
+      return meal;
+    }
+  });
+};
+
+const handleMoveMealIngredient = (state, action) => {
+  const meals = state.all;
+  const { source, destination } = action.result;
+
+  if (!destination) {
+    // Dragging outside droppables
+    return meals;
+  } else {
+    const srcId = source.droppableId;
+    const srcInd = source.index;
+    const dstId = destination.droppableId;
+    const dstInd = destination.index;
+
+    // Dragging within meal
+    if (srcId === dstId) {
+      return meals.map(meal => {
+        if (srcId === `meal-${meal.id}`) {
+          const { ingredients } = meal;
+          const ingredient = ingredients[srcInd];
+
+          ingredients.splice(srcInd, 1);
+          ingredients.splice(dstInd, 0, ingredient);
+
+          return { ...meal, ingredients };
+        } else {
+          return meal;
+        }
+      });
+    }
+    // Dragging between meals
+    else if (srcId !== "ingredient-list" && dstId !== "ingredient-list") {
+      // Get the dragged ingredient
+      let targetIngredient;
+      meals.forEach(meal => {
+        meal.ingredients.forEach((ingredient, index) => {
+          if (srcId === `meal-${meal.id}` && srcInd === index) {
+            targetIngredient = ingredient;
+          }
+        });
+      });
+
+      // Move the ingredient
+      return meals.map(meal => {
+        const { ingredients } = meal;
+        if (srcId === `meal-${meal.id}`) {
+          ingredients.splice(srcInd, 1);
+        } else if (dstId === `meal-${meal.id}`) {
+          ingredients.splice(dstInd, 0, targetIngredient);
+        }
+        return { ...meal, ingredients };
+      });
+    }
+    // Dragging from ingredient list to meal
+    else {
+      return meals;
+    }
+  }
+};
 
 const handleModifyMealIngredient = (state, action) => {
   const { mealId, ingredientId, quantity } = action.payload;
@@ -178,6 +256,10 @@ const mealsReducer = (state = INITIAL_STATE, action) => {
       return handleApiSuccess(state, action);
     case API_MEALS_FAILURE:
       return { ...state, pending: false, error: action.error };
+    case ADD_MEAL_INGREDIENT:
+      return { ...state, all: handleAddMealIngredient(state, action) };
+    case MOVE_MEAL_INGREDIENT:
+      return { ...state, all: handleMoveMealIngredient(state, action) };
     case MODIFY_MEAL_INGREDIENT:
       return { ...state, all: handleModifyMealIngredient(state, action) };
     case REMOVE_MEAL_INGREDIENT:

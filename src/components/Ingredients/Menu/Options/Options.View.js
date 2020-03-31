@@ -1,7 +1,7 @@
 import React from "react";
 
 import * as Options from "./Options.Style";
-import { Category } from "../../List/Card/Category";
+import { Category } from "../../../Meals/List/Item/Ingredients/Card/Category";
 
 const sortOptions = ["name", "calories", "carbs", "protein", "fat"];
 const filterOptions = [
