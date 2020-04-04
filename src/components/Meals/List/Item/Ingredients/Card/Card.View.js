@@ -18,7 +18,7 @@ export default props => {
   const { color } = setCategory(ingredient.category);
 
   return (
-    <Draggable draggableId={ingredient.id.toString()} index={index}>
+    <Draggable draggableId={ingredient.dragId} index={index}>
       {provided => (
         <Card.Container
           ref={provided.innerRef}
@@ -44,7 +44,7 @@ export default props => {
           <Card.Group>
             <Meta ingredient={ingredient} />
             {editable && (
-              <Card.Button onClick={() => remove(ingredient.id)}>
+              <Card.Button onClick={() => remove(ingredient.dragId)}>
                 <Card.Icon icon={["fas", "times"]} />
               </Card.Button>
             )}

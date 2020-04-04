@@ -1,3 +1,4 @@
+import uniqid from "uniqid";
 import * as mealServices from "../services/meal";
 
 // MEAL API: Logic for handling all meal API calls
@@ -137,7 +138,11 @@ const handleAddMealIngredient = (state, action) => {
   return state.all.map(meal => {
     if (mealId === `meal-${meal.id}`) {
       const { ingredients } = meal;
-      ingredients.splice(ingredientInd, 0, { ...ingredient, quantity: 1 });
+      ingredients.splice(ingredientInd, 0, {
+        ...ingredient,
+        dragId: uniqid(),
+        quantity: 1
+      });
       return { ...meal, ingredients };
     } else {
       return meal;
@@ -231,7 +236,7 @@ const handleRemoveMealIngredient = (state, action) => {
   return state.all.map(meal => {
     if (meal.id === mealId) {
       const ingredients = meal.ingredients.filter(
-        ingredient => ingredient.id !== ingredientId
+        ingredient => ingredient.dragId !== ingredientId
       );
       return { ...meal, ingredients };
     } else {

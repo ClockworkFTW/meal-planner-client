@@ -27,7 +27,7 @@ export default () => {
         // Add ingredient to meal
         if (srcId === "ingredient-list" && dstId !== "ingredient-list") {
           const ingredient = ingredients.find(
-            ingredient => ingredient.id == draggableId
+            ingredient => ingredient.dragId === draggableId
           );
           dispatch(addMealIngredient(dstId, dstInd, ingredient));
         }

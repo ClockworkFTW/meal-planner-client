@@ -22,7 +22,7 @@ export default ({ menuHeight }) => {
   );
 
   return (
-    <Droppable droppableId="ingredient-list">
+    <Droppable droppableId="ingredient-list" isDropDisabled={true}>
       {provided => (
         <List.Container
           menuHeight={menuHeight}
@@ -31,7 +31,7 @@ export default ({ menuHeight }) => {
         >
           {ingredients.map((ingredient, index) => (
             <Card
-              key={ingredient.id}
+              key={ingredient.dragId}
               index={index}
               ingredient={ingredient}
               search={search}
