@@ -13,11 +13,11 @@ export default ({ meal }) => {
   const dispatch = useDispatch();
 
   const modify = (id, quantity) =>
-    dispatch(modifyMealIngredient(meal.id, id, quantity));
-  const remove = id => dispatch(removeMealIngredient(meal.id, id));
+    dispatch(modifyMealIngredient(meal.dropId, id, quantity));
+  const remove = id => dispatch(removeMealIngredient(meal.dropId, id));
 
   return (
-    <Droppable droppableId={`meal-${meal.id}`}>
+    <Droppable droppableId={meal.dropId}>
       {provided => (
         <div
           ref={provided.innerRef}

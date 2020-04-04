@@ -4,11 +4,11 @@ import { Item } from "./Item";
 
 import * as List from "./List.Styles";
 
-export default ({ meals }) => (
+export default ({ meals, add }) => (
   <List.Container>
-    {meals.map(meal => (
-      <Item key={meal.id} meal={meal} />
+    {meals.map((meal, index) => (
+      <Item key={index} meal={meal} />
     ))}
-    <button>add meal</button>
+    <button onClick={add}>add meal</button>
   </List.Container>
 );

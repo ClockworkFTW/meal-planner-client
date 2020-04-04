@@ -104,12 +104,31 @@ const handleApiSuccess = (state, action) => {
 
 // Types
 
+const ADD_MEAL = "ADD_MEAL";
+const EDIT_MEAL = "EDIT_MEAL";
+const REMOVE_MEAL = "REMOVE_MEAL";
+
 const ADD_MEAL_INGREDIENT = "ADD_MEAL_INGREDIENT";
 const MOVE_MEAL_INGREDIENT = "MOVE_MEAL_INGREDIENT";
 const MODIFY_MEAL_INGREDIENT = "MODIFY_MEAL_INGREDIENT";
 const REMOVE_MEAL_INGREDIENT = "REMOVE_MEAL_INGREDIENT";
 
 // Actions
+
+export const addMeal = time => ({
+  type: ADD_MEAL,
+  time
+});
+
+export const editMeal = (id, prop, val) => ({
+  type: EDIT_MEAL,
+  payload: { id, prop, val }
+});
+
+export const removeMeal = id => ({
+  type: REMOVE_MEAL,
+  id
+});
 
 export const addMealIngredient = (mealId, ingredientInd, ingredient) => ({
   type: ADD_MEAL_INGREDIENT,
@@ -133,10 +152,18 @@ export const removeMealIngredient = (mealId, ingredientId) => ({
 
 // Handlers
 
+const handleAddMeal = (state, action) => {
+  const { time } = action;
+  return [
+    ...state.all,
+    { dropId: uniqid(), name: "New Meal", time, ingredients: [] }
+  ];
+};
+
 const handleAddMealIngredient = (state, action) => {
   const { mealId, ingredientInd, ingredient } = action.payload;
   return state.all.map(meal => {
-    if (mealId === `meal-${meal.id}`) {
+    if (mealId === meal.dropId) {
       const { ingredients } = meal;
       ingredients.splice(ingredientInd, 0, {
         ...ingredient,
@@ -166,7 +193,7 @@ const handleMoveMealIngredient = (state, action) => {
     // Dragging within meal
     if (srcId === dstId) {
       return meals.map(meal => {
-        if (srcId === `meal-${meal.id}`) {
+        if (srcId === meal.dropId) {
           const { ingredients } = meal;
           const ingredient = ingredients[srcInd];
 
@@ -185,7 +212,7 @@ const handleMoveMealIngredient = (state, action) => {
       let targetIngredient;
       meals.forEach(meal => {
         meal.ingredients.forEach((ingredient, index) => {
-          if (srcId === `meal-${meal.id}` && srcInd === index) {
+          if (srcId === meal.dropId && srcInd === index) {
             targetIngredient = ingredient;
           }
         });
@@ -194,9 +221,9 @@ const handleMoveMealIngredient = (state, action) => {
       // Move the ingredient
       return meals.map(meal => {
         const { ingredients } = meal;
-        if (srcId === `meal-${meal.id}`) {
+        if (srcId === meal.dropId) {
           ingredients.splice(srcInd, 1);
-        } else if (dstId === `meal-${meal.id}`) {
+        } else if (dstId === meal.dropId) {
           ingredients.splice(dstInd, 0, targetIngredient);
         }
         return { ...meal, ingredients };
@@ -212,7 +239,7 @@ const handleMoveMealIngredient = (state, action) => {
 const handleModifyMealIngredient = (state, action) => {
   const { mealId, ingredientId, quantity } = action.payload;
   return state.all.map(meal => {
-    if (meal.id === mealId) {
+    if (meal.dropId === mealId) {
       const ingredients = meal.ingredients.map(ingredient => {
         if (ingredient.id === ingredientId) {
           if (quantity < 0) {
@@ -234,7 +261,7 @@ const handleModifyMealIngredient = (state, action) => {
 const handleRemoveMealIngredient = (state, action) => {
   const { mealId, ingredientId } = action.payload;
   return state.all.map(meal => {
-    if (meal.id === mealId) {
+    if (meal.dropId === mealId) {
       const ingredients = meal.ingredients.filter(
         ingredient => ingredient.dragId !== ingredientId
       );
@@ -261,6 +288,8 @@ const mealsReducer = (state = INITIAL_STATE, action) => {
       return handleApiSuccess(state, action);
     case API_MEALS_FAILURE:
       return { ...state, pending: false, error: action.error };
+    case ADD_MEAL:
+      return { ...state, all: handleAddMeal(state, action) };
     case ADD_MEAL_INGREDIENT:
       return { ...state, all: handleAddMealIngredient(state, action) };
     case MOVE_MEAL_INGREDIENT:
