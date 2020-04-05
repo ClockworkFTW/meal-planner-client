@@ -22,7 +22,7 @@ export default ({ menuHeight }) => {
   );
 
   return (
-    <Droppable droppableId="ingredient-list" isDropDisabled={true}>
+    <Droppable droppableId="ingredient-list">
       {provided => (
         <List.Container
           menuHeight={menuHeight}

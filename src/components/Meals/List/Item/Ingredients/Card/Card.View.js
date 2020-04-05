@@ -9,42 +9,45 @@ import { Meta } from "./Meta";
 export default props => {
   // General props
   const { index, ingredient } = props;
+  const { dragId, category, quantity, name } = ingredient;
 
   // Meal list props
   const { editable, modify, remove } = props;
 
   // Ingredient list props
   const { search } = props;
-  const { color } = setCategory(ingredient.category);
+  const { color } = setCategory(category);
 
   return (
-    <Draggable draggableId={ingredient.dragId} index={index}>
-      {provided => (
+    <Draggable draggableId={dragId} index={index}>
+      {(provided, snapshot) => (
         <Card.Container
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          dragging={snapshot.isDragging}
         >
           <Card.Group>
             {editable && (
               <Card.Quantity
                 type="number"
-                value={ingredient.quantity}
-                onChange={event => modify(ingredient.id, event.target.value)}
+                value={quantity}
+                onChange={event => modify(dragId, event.target.value)}
                 color={color}
               />
             )}
-            <Category category={ingredient.category} />
+            <Category category={category} />
             <Card.Name
               searchWords={[search]}
-              textToHighlight={ingredient.name}
+              textToHighlight={name}
               color={color}
+              dragging={snapshot.isDragging}
             />
           </Card.Group>
           <Card.Group>
-            <Meta ingredient={ingredient} />
+            <Meta ingredient={ingredient} dragging={snapshot.isDragging} />
             {editable && (
-              <Card.Button onClick={() => remove(ingredient.dragId)}>
+              <Card.Button onClick={() => remove(dragId)}>
                 <Card.Icon icon={["fas", "times"]} />
               </Card.Button>
             )}

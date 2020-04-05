@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import * as Meta from "./Meta.Styles";
 
-export default ({ ingredient }) => {
+export default ({ ingredient, dragging }) => {
   const { quantity, serving_unit } = ingredient;
   let { calories, serving_size, carbs, protein, fat } = ingredient;
 
@@ -16,7 +16,7 @@ export default ({ ingredient }) => {
   const [toggle, setToggle] = useState(true);
 
   return (
-    <Meta.Container onClick={() => setToggle(!toggle)}>
+    <Meta.Container onClick={() => setToggle(!toggle)} dragging={dragging}>
       {toggle ? (
         <>
           <span>{calories}kcal</span>

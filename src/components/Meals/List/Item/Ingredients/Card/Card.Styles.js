@@ -10,7 +10,7 @@ export const Container = styled.div`
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 16px;
-  background: #f7fafc;
+  background: ${props => (props.dragging ? "#4a5568" : "#f7fafc")};
 `;
 
 export const Group = styled.div`
@@ -34,7 +34,7 @@ export const Name = styled(Highlighter)`
   line-height: 20px;
   font-weight: 600;
   font-size: 16px;
-  color: #2d3748;
+  color: ${props => (props.dragging ? "#ffffff" : "#2d3748")};
   & > mark {
     background: none;
     color: ${props => props.color};

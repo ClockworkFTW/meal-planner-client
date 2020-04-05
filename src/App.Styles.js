@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
     font-family: 'Source Sans Pro', sans-serif;
+    background: #EDF2F7;
   }
   *, *:before, *:after {
     box-sizing: inherit;

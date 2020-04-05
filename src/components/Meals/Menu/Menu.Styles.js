@@ -5,9 +5,9 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px;
+  margin: 30px 30px 20px 30px;
   padding: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #edf2f8;
   border-radius: 100px;
 `;
 

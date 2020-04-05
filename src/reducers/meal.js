@@ -253,7 +253,7 @@ const handleModifyMealIngredient = (state, action) => {
   return state.all.map(meal => {
     if (meal.dropId === mealId) {
       const ingredients = meal.ingredients.map(ingredient => {
-        if (ingredient.id === ingredientId) {
+        if (ingredient.dragId === ingredientId) {
           if (quantity < 0) {
             return { ...ingredient, quantity: 0 };
           } else {
