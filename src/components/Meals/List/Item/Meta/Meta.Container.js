@@ -1,10 +1,14 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import { editMeal } from "../../../../../reducers/meal";
 
 import Meta from "./Meta.View";
 
-export default ({ name, time }) => {
+export default ({ id, name, time }) => {
   const dispatch = useDispatch();
 
-  return <Meta name={name} time={time} />;
+  const setName = event => dispatch(editMeal(id, "name", event.target.value));
+
+  return <Meta name={name} setName={setName} time={time} />;
 };

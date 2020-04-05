@@ -1,3 +1,3 @@
-import Meta from "./Meta.View";
+import Meta from "./Meta.Container";
 
 export { Meta };

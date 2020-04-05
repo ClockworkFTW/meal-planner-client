@@ -154,10 +154,22 @@ export const removeMealIngredient = (mealId, ingredientId) => ({
 
 const handleAddMeal = (state, action) => {
   const { time } = action;
-  return [
-    ...state.all,
-    { dropId: uniqid(), name: "New Meal", time, ingredients: [] }
-  ];
+  return [...state.all, { dropId: uniqid(), name: "", time, ingredients: [] }];
+};
+
+const handleEditMeal = (state, action) => {
+  const { id, prop, val } = action.payload;
+  return state.all.map(meal => {
+    if (meal.dropId === id) {
+      return { ...meal, [prop]: val };
+    } else {
+      return meal;
+    }
+  });
+};
+
+const handleRemoveMeal = (state, action) => {
+  return state.all.filter(meal => meal.dropId !== action.id);
 };
 
 const handleAddMealIngredient = (state, action) => {
@@ -290,6 +302,10 @@ const mealsReducer = (state = INITIAL_STATE, action) => {
       return { ...state, pending: false, error: action.error };
     case ADD_MEAL:
       return { ...state, all: handleAddMeal(state, action) };
+    case EDIT_MEAL:
+      return { ...state, all: handleEditMeal(state, action) };
+    case REMOVE_MEAL:
+      return { ...state, all: handleRemoveMeal(state, action) };
     case ADD_MEAL_INGREDIENT:
       return { ...state, all: handleAddMealIngredient(state, action) };
     case MOVE_MEAL_INGREDIENT:

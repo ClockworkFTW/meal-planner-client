@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
-import { getAllMeals, addMeal } from "../../../reducers/meal";
+import { getAllMeals, addMeal, removeMeal } from "../../../reducers/meal";
 
 import List from "./List.View";
 
@@ -48,5 +48,7 @@ export default ({ offset }) => {
     dispatch(addMeal(time));
   };
 
-  return <List meals={meals} add={add} />;
+  const remove = id => dispatch(removeMeal(id));
+
+  return <List meals={meals} add={add} remove={remove} />;
 };
