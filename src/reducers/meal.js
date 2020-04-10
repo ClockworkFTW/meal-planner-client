@@ -1,5 +1,6 @@
 import uniqid from "uniqid";
 import * as mealServices from "../services/meal";
+import * as mealIngredientServices from "../services/meal_ingredient";
 
 // MEAL API: Logic for handling all meal API calls
 
@@ -174,14 +175,20 @@ const handleRemoveMeal = (state, action) => {
 
 const handleAddMealIngredient = (state, action) => {
   const { mealId, ingredientInd, ingredient } = action.payload;
+  // Update state
   return state.all.map(meal => {
     if (mealId === meal.dropId) {
+      // Update database
+      mealIngredientServices.addIngredient(meal.id, ingredient.id);
+
       const { ingredients } = meal;
+
       ingredients.splice(ingredientInd, 0, {
         ...ingredient,
         dragId: uniqid(),
         quantity: 1
       });
+
       return { ...meal, ingredients };
     } else {
       return meal;
@@ -234,8 +241,12 @@ const handleMoveMealIngredient = (state, action) => {
       return meals.map(meal => {
         const { ingredients } = meal;
         if (srcId === meal.dropId) {
+          // Update database
+          mealIngredientServices.removeIngredient(meal.id, targetIngredient.id);
           ingredients.splice(srcInd, 1);
         } else if (dstId === meal.dropId) {
+          // Update database
+          mealIngredientServices.addIngredient(meal.id, targetIngredient.id);
           ingredients.splice(dstInd, 0, targetIngredient);
         }
         return { ...meal, ingredients };
@@ -274,9 +285,15 @@ const handleRemoveMealIngredient = (state, action) => {
   const { mealId, ingredientId } = action.payload;
   return state.all.map(meal => {
     if (meal.dropId === mealId) {
-      const ingredients = meal.ingredients.filter(
-        ingredient => ingredient.dragId !== ingredientId
-      );
+      const ingredients = meal.ingredients.filter(ingredient => {
+        if (ingredient.dragId !== ingredientId) {
+          return true;
+        } else {
+          // Update database
+          mealIngredientServices.removeIngredient(meal.id, ingredient.id);
+          return false;
+        }
+      });
       return { ...meal, ingredients };
     } else {
       return meal;
