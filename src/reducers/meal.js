@@ -38,12 +38,12 @@ export const getAllMeals = () => {
   };
 };
 
-export const createMeal = ingredient => {
+export const createMeal = meal => {
   return async dispatch => {
     dispatch(apiMealsPending);
     try {
-      const newIngredient = await mealServices.createMeal(ingredient);
-      dispatch(apiMealsSuccess("create", newIngredient));
+      const newMeal = await mealServices.createMeal(meal);
+      dispatch(apiMealsSuccess("create", newMeal));
     } catch (error) {
       dispatch(apiMealsFailure(error));
     }
@@ -105,9 +105,7 @@ const handleApiSuccess = (state, action) => {
 
 // Types
 
-const ADD_MEAL = "ADD_MEAL";
 const EDIT_MEAL = "EDIT_MEAL";
-const REMOVE_MEAL = "REMOVE_MEAL";
 
 const ADD_MEAL_INGREDIENT = "ADD_MEAL_INGREDIENT";
 const MOVE_MEAL_INGREDIENT = "MOVE_MEAL_INGREDIENT";
@@ -116,19 +114,9 @@ const REMOVE_MEAL_INGREDIENT = "REMOVE_MEAL_INGREDIENT";
 
 // Actions
 
-export const addMeal = time => ({
-  type: ADD_MEAL,
-  time
-});
-
 export const editMeal = (id, prop, val) => ({
   type: EDIT_MEAL,
   payload: { id, prop, val }
-});
-
-export const removeMeal = id => ({
-  type: REMOVE_MEAL,
-  id
 });
 
 export const addMealIngredient = (mealId, ingredientInd, ingredient) => ({
@@ -153,11 +141,6 @@ export const removeMealIngredient = (mealId, ingredientId) => ({
 
 // Handlers
 
-const handleAddMeal = (state, action) => {
-  const { time } = action;
-  return [...state.all, { dropId: uniqid(), name: "", time, ingredients: [] }];
-};
-
 const handleEditMeal = (state, action) => {
   const { id, prop, val } = action.payload;
   return state.all.map(meal => {
@@ -167,10 +150,6 @@ const handleEditMeal = (state, action) => {
       return meal;
     }
   });
-};
-
-const handleRemoveMeal = (state, action) => {
-  return state.all.filter(meal => meal.dropId !== action.id);
 };
 
 const handleAddMealIngredient = (state, action) => {
@@ -317,12 +296,8 @@ const mealsReducer = (state = INITIAL_STATE, action) => {
       return handleApiSuccess(state, action);
     case API_MEALS_FAILURE:
       return { ...state, pending: false, error: action.error };
-    case ADD_MEAL:
-      return { ...state, all: handleAddMeal(state, action) };
     case EDIT_MEAL:
       return { ...state, all: handleEditMeal(state, action) };
-    case REMOVE_MEAL:
-      return { ...state, all: handleRemoveMeal(state, action) };
     case ADD_MEAL_INGREDIENT:
       return { ...state, all: handleAddMealIngredient(state, action) };
     case MOVE_MEAL_INGREDIENT:

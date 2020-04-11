@@ -7,8 +7,8 @@ const getMeals = async () => {
   return result.data;
 };
 
-const createMeal = async meal => {
-  const result = await axios.post(baseURL, meal);
+const createMeal = async time => {
+  const result = await axios.post(baseURL, time);
   return result.data;
 };
 

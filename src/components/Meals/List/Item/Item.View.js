@@ -13,6 +13,6 @@ export default ({ meal, remove }) => (
       <Ingredients meal={meal} />
       <Macros ingredients={meal.ingredients} />
     </Item.Container>
-    <Item.Button onClick={() => remove(meal.dropId)}>remove</Item.Button>
+    <Item.Button onClick={() => remove(meal.id)}>remove</Item.Button>
   </Item.Wrapper>
 );

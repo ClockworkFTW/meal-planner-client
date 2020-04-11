@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
-import { getAllMeals, addMeal, removeMeal } from "../../../reducers/meal";
+import { getAllMeals, createMeal, deleteMeal } from "../../../reducers/meal";
 
 import List from "./List.View";
 
@@ -42,13 +42,14 @@ export default ({ offset }) => {
     // Else, add new meal after last meal
     else {
       const lastMealTime = meals[mealCount - 1].time;
-      time = moment(lastMealTime).add(1, "second");
+      console.log(lastMealTime);
+      time = moment(lastMealTime).add(1, "minute");
     }
 
-    dispatch(addMeal(time));
+    dispatch(createMeal({ user: 1, name: "", time }));
   };
 
-  const remove = id => dispatch(removeMeal(id));
+  const remove = id => dispatch(deleteMeal(id));
 
   return <List meals={meals} add={add} remove={remove} />;
 };
