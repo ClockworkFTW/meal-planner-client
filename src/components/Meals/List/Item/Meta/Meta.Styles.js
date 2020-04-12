@@ -9,7 +9,14 @@ export const Time = styled.h3`
   color: #a0aec0;
 `;
 
-export const Name = styled.textarea`
+export const NameDisplay = styled.h1`
+  text-transform: capitalize;
+  font-size: 36px;
+  font-weight: 700;
+  color: #2d3748;
+`;
+
+export const NameInput = styled.textarea`
   width: 100%;
   height: 100%;
   resize: none;

@@ -46,7 +46,7 @@ export default ({ offset }) => {
       time = moment(lastMealTime).add(1, "minute");
     }
 
-    dispatch(createMeal({ user: 1, name: "", time }));
+    dispatch(createMeal({ user: 1, time }));
   };
 
   const remove = id => dispatch(deleteMeal(id));

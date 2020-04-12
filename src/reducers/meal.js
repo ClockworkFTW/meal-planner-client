@@ -247,6 +247,11 @@ const handleModifyMealIngredient = (state, action) => {
           if (quantity < 0) {
             return { ...ingredient, quantity: 0 };
           } else {
+            mealIngredientServices.updateIngredient(
+              meal.id,
+              ingredient.id,
+              quantity
+            );
             return { ...ingredient, quantity };
           }
         } else {
