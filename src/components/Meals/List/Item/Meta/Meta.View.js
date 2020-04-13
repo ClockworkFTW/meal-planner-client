@@ -1,11 +1,12 @@
 import React from "react";
-import moment from "moment";
+
+import { Time } from "../../../../Time";
 
 import * as Meta from "./Meta.Styles";
 
-export default ({ edit, setEdit, name, setName, time }) => (
+export default ({ id, edit, setEdit, name, setName, time }) => (
   <Meta.Container>
-    <Meta.Time>{moment(time).format("H:mm")}</Meta.Time>
+    <Time id={id} time={time} />
     {edit ? (
       <Meta.NameInput
         type="text"

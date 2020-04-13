@@ -14,6 +14,7 @@ export default ({ id, name, time }) => {
 
   return (
     <Meta
+      id={id}
       edit={edit}
       setEdit={setEdit}
       name={name}

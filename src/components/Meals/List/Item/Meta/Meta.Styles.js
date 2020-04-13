@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  position: relative;
   flex: 0 0 20%;
 `;
 
@@ -14,6 +15,10 @@ export const NameDisplay = styled.h1`
   font-size: 36px;
   font-weight: 700;
   color: #2d3748;
+  &:hover {
+    cursor: pointer;
+    color: #5a67d8;
+  }
 `;
 
 export const NameInput = styled.textarea`
