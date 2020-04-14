@@ -2,14 +2,20 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 
-import { editMeal } from "../../reducers/meal";
+import { updateMeal } from "../../reducers/meal";
 
 import { TimeEditor, TimeDisplay } from "./Time.View";
 
 export default ({ id, time }) => {
   // Toggle editor
   const [editing, setEditing] = useState(false);
-  const toggle = () => setEditing(!editing);
+  const toggle = () => {
+    if (editing) {
+      setHour(moment(time).hour());
+      setMin(moment(time).minute());
+    }
+    setEditing(!editing);
+  };
 
   // Component form state
   const [hour, setHour] = useState(moment(time).hour());
@@ -21,7 +27,7 @@ export default ({ id, time }) => {
     const newTime = moment(time)
       .hour(hour)
       .minute(min);
-    dispatch(editMeal(id, "time", newTime));
+    dispatch(updateMeal(id, { time: newTime }));
     toggle();
   };
 

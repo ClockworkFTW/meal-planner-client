@@ -9,7 +9,7 @@ import { Macros } from "./Macros";
 export default ({ meal, remove }) => (
   <Item.Wrapper>
     <Item.Container>
-      <Meta id={meal.dropId} time={meal.time} name={meal.name} />
+      <Meta id={meal.id} time={meal.time} name={meal.name} />
       <Ingredients meal={meal} />
       <Macros ingredients={meal.ingredients} />
     </Item.Container>

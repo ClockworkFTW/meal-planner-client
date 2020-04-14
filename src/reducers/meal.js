@@ -50,12 +50,12 @@ export const createMeal = meal => {
   };
 };
 
-export const updateMeal = (id, ingredient) => {
+export const updateMeal = (id, update) => {
   return async dispatch => {
     dispatch(apiMealsPending);
     try {
-      const updatedIngredient = await mealServices.updateMeal(id, ingredient);
-      dispatch(apiMealsSuccess("update", updatedIngredient));
+      const updatedMeal = await mealServices.updateMeal(id, update);
+      dispatch(apiMealsSuccess("update", updatedMeal));
     } catch (error) {
       dispatch(apiMealsFailure(error));
     }

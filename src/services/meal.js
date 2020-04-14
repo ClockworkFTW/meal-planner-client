@@ -7,13 +7,13 @@ const getMeals = async () => {
   return result.data;
 };
 
-const createMeal = async time => {
-  const result = await axios.post(baseURL, time);
+const createMeal = async meal => {
+  const result = await axios.post(baseURL, meal);
   return result.data;
 };
 
-const updateMeal = async (id, meal) => {
-  const result = await axios.put(`${baseURL}/${id}`, meal);
+const updateMeal = async (id, update) => {
+  const result = await axios.patch(`${baseURL}/${id}`, update);
   return result.data;
 };
 
