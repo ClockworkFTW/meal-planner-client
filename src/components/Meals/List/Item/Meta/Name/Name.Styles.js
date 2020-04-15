@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 20px);
   margin-top: 4px;
 `;
 

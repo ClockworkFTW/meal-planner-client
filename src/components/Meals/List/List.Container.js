@@ -28,12 +28,11 @@ export default ({ offset }) => {
   }, [dispatch]);
 
   const add = () => {
-    let time;
+    let time = moment.utc().add(offset, "day");
     const mealCount = meals.length;
 
     // If active day has no meals, add new meal at 6:00 AM
     if (mealCount === 0) {
-      time = moment().add(offset, "day");
       time = time
         .hour(6)
         .minute(0)
@@ -41,9 +40,13 @@ export default ({ offset }) => {
     }
     // Else, add new meal after last meal
     else {
-      const lastMealTime = meals[mealCount - 1].time;
-      console.log(lastMealTime);
-      time = moment(lastMealTime).add(1, "minute");
+      const lastMealTime = moment(meals[mealCount - 1].time);
+      const hour = lastMealTime.hour();
+      const minute = lastMealTime.minute() + 1;
+      time = time
+        .hour(hour)
+        .minute(minute)
+        .second(0);
     }
 
     dispatch(createMeal({ user: 1, time }));

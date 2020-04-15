@@ -19,10 +19,13 @@ export default ({ id, time }) => {
   const [hour, setHour] = useState(moment(time).hour());
   const [min, setMin] = useState(moment(time).minute());
 
-  // Update redux state with new meal time
+  // Update database
   const dispatch = useDispatch();
   const setTime = () => {
-    const newTime = moment(time)
+    const day = moment(time).day();
+    const newTime = moment
+      .utc()
+      .day(day)
       .hour(hour)
       .minute(min);
     dispatch(updateMeal(id, { time: newTime }));
