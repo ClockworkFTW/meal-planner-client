@@ -63,10 +63,14 @@ export const TimeEditor = props => {
           </Time.Button>
         </Time.Group>
       </Time.Controls>
-      <div>
-        <button onClick={setTime}>set</button>
-        <button onClick={toggle}>cancel</button>
-      </div>
+      <Time.Buttons>
+        <Time.Button onClick={setTime}>
+          <Time.Icon icon={["fas", "check"]} />
+        </Time.Button>
+        <Time.Button onClick={toggle}>
+          <Time.Icon icon={["fas", "times"]} />
+        </Time.Button>
+      </Time.Buttons>
     </Time.Container>
   );
 };

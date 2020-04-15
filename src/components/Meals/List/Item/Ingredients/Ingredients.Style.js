@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   position: relative;
   width: 100%;
-  padding: 10px;
+  padding: 0 20px;
   border: ${props =>
     props.dropping ? "2px dashed #CBD5E0" : "2px solid #FFFFFF"};
   border-radius: 8px;

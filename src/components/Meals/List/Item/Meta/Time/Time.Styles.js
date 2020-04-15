@@ -35,24 +35,34 @@ export const Input = styled.input`
   color: #2d3748;
 `;
 
+export const Span = styled.span`
+  margin: 0 8px;
+`;
+
+export const Buttons = styled.div`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`;
+
 export const Button = styled.button`
   border: none;
   outline: none;
   background: none;
+  color: #a0aec0;
   &:hover {
     cursor: pointer;
+    color: #667eea;
   }
 `;
 
 export const Icon = styled(FontAwesomeIcon)``;
 
-export const Span = styled.span`
-  margin: 0 8px;
-`;
-
 export const Display = styled.h1`
   font-weight: 600;
   color: #a0aec0;
+  transition: 0.2s all ease-in-out;
   &:hover {
     cursor: pointer;
     color: #5a67d8;

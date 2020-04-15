@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 
-import { updateMeal } from "../../reducers/meal";
+import { updateMeal } from "../../../../../../reducers/meal";
 
 import { TimeEditor, TimeDisplay } from "./Time.View";
 
@@ -10,10 +10,8 @@ export default ({ id, time }) => {
   // Toggle editor
   const [editing, setEditing] = useState(false);
   const toggle = () => {
-    if (editing) {
-      setHour(moment(time).hour());
-      setMin(moment(time).minute());
-    }
+    setHour(moment(time).hour());
+    setMin(moment(time).minute());
     setEditing(!editing);
   };
 
