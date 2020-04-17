@@ -12,13 +12,13 @@ import { Card } from "./Card";
 import * as Ingredients from "./Ingredients.Style";
 
 export default ({ meal }) => {
-  const dispatch = useDispatch();
+  const ingredients = meal.ingredients.sort((a, b) => a.position - b.position);
+  const noIngredients = meal.ingredients.length === 0;
 
+  const dispatch = useDispatch();
   const modify = (id, quantity) =>
     dispatch(modifyMealIngredient(meal.dropId, id, quantity));
   const remove = id => dispatch(removeMealIngredient(meal.dropId, id));
-
-  const noIngredients = meal.ingredients.length === 0;
 
   return (
     <Droppable droppableId={meal.dropId}>
@@ -28,7 +28,7 @@ export default ({ meal }) => {
           {...provided.droppableProps}
           dropping={noIngredients || snapshot.isDraggingOver}
         >
-          {meal.ingredients.map((ingredient, index) => (
+          {ingredients.map((ingredient, index) => (
             <Card
               key={ingredient.dragId}
               index={index}

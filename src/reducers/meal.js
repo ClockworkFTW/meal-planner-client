@@ -141,24 +141,17 @@ export const removeMealIngredient = (mealId, ingredientId) => ({
 
 // Handlers
 
-const handleEditMeal = (state, action) => {
-  const { id, prop, val } = action.payload;
-  return state.all.map(meal => {
-    if (meal.dropId === id) {
-      return { ...meal, [prop]: val };
-    } else {
-      return meal;
-    }
-  });
-};
-
 const handleAddMealIngredient = (state, action) => {
   const { mealId, ingredientInd, ingredient } = action.payload;
   // Update state
   return state.all.map(meal => {
     if (mealId === meal.dropId) {
       // Update database
-      mealIngredientServices.addIngredient(meal.id, ingredient.id);
+      mealIngredientServices.addIngredient(
+        meal.id,
+        ingredient.id,
+        ingredientInd
+      );
 
       const { ingredients } = meal;
 
@@ -179,10 +172,12 @@ const handleMoveMealIngredient = (state, action) => {
   const meals = state.all;
   const { source, destination } = action.result;
 
+  // Invalid drag
   if (!destination) {
-    // Dragging outside droppables
     return meals;
-  } else {
+  }
+  // Valid drag
+  else {
     const srcId = source.droppableId;
     const srcInd = source.index;
     const dstId = destination.droppableId;
@@ -194,16 +189,23 @@ const handleMoveMealIngredient = (state, action) => {
         if (srcId === meal.dropId) {
           const { ingredients } = meal;
           const ingredient = ingredients[srcInd];
-
+          // Update state
           ingredients.splice(srcInd, 1);
           ingredients.splice(dstInd, 0, ingredient);
-
+          // Update database
+          mealIngredientServices.removeIngredient(
+            meal.id,
+            ingredient.id,
+            srcInd
+          );
+          mealIngredientServices.addIngredient(meal.id, ingredient.id, dstInd);
           return { ...meal, ingredients };
         } else {
           return meal;
         }
       });
     }
+
     // Dragging between meals
     else if (srcId !== "ingredient-list" && dstId !== "ingredient-list") {
       // Get the dragged ingredient
@@ -221,11 +223,21 @@ const handleMoveMealIngredient = (state, action) => {
         const { ingredients } = meal;
         if (srcId === meal.dropId) {
           // Update database
-          mealIngredientServices.removeIngredient(meal.id, targetIngredient.id);
+          mealIngredientServices.removeIngredient(
+            meal.id,
+            targetIngredient.id,
+            srcInd
+          );
+          // Update state
           ingredients.splice(srcInd, 1);
         } else if (dstId === meal.dropId) {
           // Update database
-          mealIngredientServices.addIngredient(meal.id, targetIngredient.id);
+          mealIngredientServices.addIngredient(
+            meal.id,
+            targetIngredient.id,
+            dstInd
+          );
+          // Update state
           ingredients.splice(dstInd, 0, targetIngredient);
         }
         return { ...meal, ingredients };
@@ -269,12 +281,16 @@ const handleRemoveMealIngredient = (state, action) => {
   const { mealId, ingredientId } = action.payload;
   return state.all.map(meal => {
     if (meal.dropId === mealId) {
-      const ingredients = meal.ingredients.filter(ingredient => {
+      const ingredients = meal.ingredients.filter((ingredient, index) => {
         if (ingredient.dragId !== ingredientId) {
           return true;
         } else {
           // Update database
-          mealIngredientServices.removeIngredient(meal.id, ingredient.id);
+          mealIngredientServices.removeIngredient(
+            meal.id,
+            ingredient.id,
+            index
+          );
           return false;
         }
       });
@@ -301,8 +317,6 @@ const mealsReducer = (state = INITIAL_STATE, action) => {
       return handleApiSuccess(state, action);
     case API_MEALS_FAILURE:
       return { ...state, pending: false, error: action.error };
-    case EDIT_MEAL:
-      return { ...state, all: handleEditMeal(state, action) };
     case ADD_MEAL_INGREDIENT:
       return { ...state, all: handleAddMealIngredient(state, action) };
     case MOVE_MEAL_INGREDIENT:
