@@ -105,19 +105,12 @@ const handleApiSuccess = (state, action) => {
 
 // Types
 
-const EDIT_MEAL = "EDIT_MEAL";
-
 const ADD_MEAL_INGREDIENT = "ADD_MEAL_INGREDIENT";
 const MOVE_MEAL_INGREDIENT = "MOVE_MEAL_INGREDIENT";
 const MODIFY_MEAL_INGREDIENT = "MODIFY_MEAL_INGREDIENT";
 const REMOVE_MEAL_INGREDIENT = "REMOVE_MEAL_INGREDIENT";
 
 // Actions
-
-export const editMeal = (id, prop, val) => ({
-  type: EDIT_MEAL,
-  payload: { id, prop, val }
-});
 
 export const addMealIngredient = (mealId, ingredientInd, ingredient) => ({
   type: ADD_MEAL_INGREDIENT,
@@ -185,20 +178,29 @@ const handleMoveMealIngredient = (state, action) => {
 
     // Dragging within meal
     if (srcId === dstId) {
+      // Ensure order of delete/add operations are handled synchronously on backend
+      const persist = async (mealId, ingredientId, srcInd, dstInd) => {
+        await mealIngredientServices.removeIngredient(
+          mealId,
+          ingredientId,
+          srcInd
+        );
+        await mealIngredientServices.addIngredient(
+          mealId,
+          ingredientId,
+          dstInd
+        );
+      };
+      // Move the ingredient
       return meals.map(meal => {
         if (srcId === meal.dropId) {
           const { ingredients } = meal;
-          const ingredient = ingredients[srcInd];
+          let ingredient = { ...ingredients[srcInd], position: dstInd };
+          // Update database
+          persist(meal.id, ingredient.id, srcInd, dstInd);
           // Update state
           ingredients.splice(srcInd, 1);
           ingredients.splice(dstInd, 0, ingredient);
-          // Update database
-          mealIngredientServices.removeIngredient(
-            meal.id,
-            ingredient.id,
-            srcInd
-          );
-          mealIngredientServices.addIngredient(meal.id, ingredient.id, dstInd);
           return { ...meal, ingredients };
         } else {
           return meal;
@@ -217,7 +219,6 @@ const handleMoveMealIngredient = (state, action) => {
           }
         });
       });
-
       // Move the ingredient
       return meals.map(meal => {
         const { ingredients } = meal;
