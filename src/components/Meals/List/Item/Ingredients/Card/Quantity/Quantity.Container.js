@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import * as mealIngredientServices from "../../../../../../../services/meal_ingredient";
@@ -31,6 +31,13 @@ export default ({ mealId, ingredientId, quantity, color }) => {
     }
   };
 
+  const inputField = useRef(null);
+  useEffect(() => {
+    if (editing) {
+      inputField.current.select();
+    }
+  }, [editing]);
+
   // Update redux state
   const setQuantity = value => {
     dispatch(modifyMealIngredient(mealId, ingredientId, value));
@@ -44,6 +51,7 @@ export default ({ mealId, ingredientId, quantity, color }) => {
 
   return editing ? (
     <QuantityEditor
+      inputField={inputField}
       quantity={quantity}
       setQuantity={setQuantity}
       saveQuantity={saveQuantity}
