@@ -178,7 +178,7 @@ const handleMoveMealIngredient = (state, action) => {
 
     // Dragging within meal
     if (srcId === dstId) {
-      // Ensure order of delete/add operations are handled synchronously on backend
+      // Ensure order of delete/add operations are called synchronously
       const persist = async (mealId, ingredientId, srcInd, dstInd) => {
         await mealIngredientServices.removeIngredient(
           mealId,
@@ -254,17 +254,12 @@ const handleMoveMealIngredient = (state, action) => {
 const handleModifyMealIngredient = (state, action) => {
   const { mealId, ingredientId, quantity } = action.payload;
   return state.all.map(meal => {
-    if (meal.dropId === mealId) {
+    if (meal.id === mealId) {
       const ingredients = meal.ingredients.map(ingredient => {
-        if (ingredient.dragId === ingredientId) {
+        if (ingredient.id === ingredientId) {
           if (quantity < 0) {
             return { ...ingredient, quantity: 0 };
           } else {
-            mealIngredientServices.updateIngredient(
-              meal.id,
-              ingredient.id,
-              quantity
-            );
             return { ...ingredient, quantity };
           }
         } else {

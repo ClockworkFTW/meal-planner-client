@@ -3,16 +3,17 @@ import { Draggable } from "react-beautiful-dnd";
 
 import * as Card from "./Card.Styles";
 
+import { Quantity } from "./Quantity";
 import { Category, setCategory } from "./Category";
 import { Meta } from "./Meta";
 
 export default props => {
   // General props
-  const { index, ingredient } = props;
-  const { dragId, category, quantity, name } = ingredient;
+  const { index, mealId, ingredient } = props;
+  const { id, dragId, category, quantity, name } = ingredient;
 
   // Meal list props
-  const { editable, modify, remove } = props;
+  const { editable, remove } = props;
 
   // Ingredient list props
   const { search } = props;
@@ -29,10 +30,10 @@ export default props => {
         >
           <Card.Group>
             {editable && (
-              <Card.Quantity
-                type="number"
-                value={quantity}
-                onChange={event => modify(dragId, event.target.value)}
+              <Quantity
+                mealId={mealId}
+                ingredientId={id}
+                quantity={quantity}
                 color={color}
               />
             )}

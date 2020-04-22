@@ -19,7 +19,7 @@ export default ({ id, name }) => {
 
   useEffect(() => {
     if (editing) {
-      nameField.current.focus();
+      nameField.current.select();
     }
   }, [editing]);
 

@@ -19,17 +19,6 @@ export const Group = styled.div`
   align-items: center;
 `;
 
-export const Quantity = styled.input`
-  width: 50px;
-  border: none;
-  outline: none;
-  background: none;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  color: ${props => props.color};
-`;
-
 export const Name = styled(Highlighter)`
   line-height: 20px;
   font-weight: 600;

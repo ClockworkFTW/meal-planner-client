@@ -10,8 +10,8 @@ const removeIngredient = async (mealId, ingredientId, position) => {
   await axios.delete(`${baseURL}/${mealId}/${ingredientId}/${position}`);
 };
 
-const updateIngredient = async (mealId, ingredientId, update) => {
-  await axios.patch(`${baseURL}/${mealId}/${ingredientId}`, update);
+const updateIngredient = async (mealId, ingredientId, quantity) => {
+  await axios.patch(`${baseURL}/${mealId}/${ingredientId}`, { quantity });
 };
 
 export { addIngredient, removeIngredient, updateIngredient };

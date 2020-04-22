@@ -2,10 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
 
-import {
-  modifyMealIngredient,
-  removeMealIngredient
-} from "../../../../../reducers/meal";
+import { removeMealIngredient } from "../../../../../reducers/meal";
 
 import { Card } from "./Card";
 
@@ -16,9 +13,8 @@ export default ({ meal }) => {
   const noIngredients = meal.ingredients.length === 0;
 
   const dispatch = useDispatch();
-  const modify = (id, quantity) =>
-    dispatch(modifyMealIngredient(meal.dropId, id, quantity));
-  const remove = id => dispatch(removeMealIngredient(meal.dropId, id));
+  const remove = ingredientId =>
+    dispatch(removeMealIngredient(meal.dropId, ingredientId));
 
   return (
     <Droppable droppableId={meal.dropId}>
@@ -32,10 +28,10 @@ export default ({ meal }) => {
             <Card
               key={ingredient.dragId}
               index={index}
+              mealId={meal.id}
               ingredient={ingredient}
-              editable={true}
-              modify={modify}
               remove={remove}
+              editable={true}
             />
           ))}
           {noIngredients && (
